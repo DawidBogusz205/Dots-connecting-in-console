@@ -1,3 +1,11 @@
+/**
+ * @file main.cpp
+ * @author BugiBugi205
+ * @date 2022-04-12
+ * 
+ * @copyright Copyright (c) 2022
+ */
+
 #include <iostream>
 
 using namespace std;
@@ -6,73 +14,105 @@ void BresenhamLine(char**,const int, const int, const int, const int);
 
 int main()
 {
-    int rows = 25, cols = 30,  points;
-    int A1=24,A2=0;
-    int B1=24,B2=29;
-    int a;
+    uint16_t rows = 25, cols = 30, points;
+    uint16_t A1=24,A2=0;
+    uint16_t B1=24,B2=29;
+    char **arr;
+    int **points_arr;
 
-    cout<<"x1: ";
-    cin>>A1;
-    cout<<"y1: ";
-    cin>>A2;
-    cout<<"x2: ";
-    cin>>B1;
-    cout<<"y2: ";
-    cin>>B2;
+    cout<<"How many points: ";
+    cin>>points;
+
+    points_arr = new int *[2];
+    points_arr[1] = new int [points];   //x
+    points_arr[0] = new int [points];   //y
+    
+    for(int i = 0; i < points; i++)
+    {
+        cout<<"x"<<i+1<<": ";
+        cin>>points_arr[1][i];
+
+        if(points_arr[1][i]>cols) cols = points_arr[1][i];
+
+        cout<<"y"<<i+1<<": ";
+        cin>>points_arr[0][i];
+
+        if(points_arr[0][i]>rows) rows = points_arr[0][i];
+        
+        //arr[points_arr[0][i]][points_arr[1][i]] =(char) 65+i;
+    }
     cout<<endl;
 
-    if(A1>B1) rows = A1+5;
-    else rows = B1+5;
+    rows+=5;
+    cols+=5;
 
-    if(A2>B2) cols = A2+5;
-    else cols = B2+5;
-
-    char **ary = new char *[rows];
-
+    arr = new char *[rows];
     for(int i=0; i<rows; i++)
     {
-        ary[i] = new char [cols];
+        arr[i] = new char [cols];
     }
 
+    //fills background array with '-'
     for(int i=0; i<rows; i++)
     {
         for(int x=0; x<cols; x++)
         {
-            ary[i][x] ='-';
+            arr[i][x] ='-';
         }
     }
 
-    BresenhamLine(ary,A1,A2,B1,B2);
+    //draws lines between points
+    for(int i = 0; i < points; i++)
+    {
+        if(i+1>=points)
+        {
+            BresenhamLine(arr,points_arr[0][i],points_arr[1][i],points_arr[0][0],points_arr[1][0]);
+            break;
+        }
+        
+        BresenhamLine(arr,points_arr[0][i],points_arr[1][i],points_arr[0][i+1],points_arr[1][i+1]);
+    }
 
-    //point A
-    ary[A1][A2] = 'A';
-    //point B
-    ary[B1][B2] = 'B';
+    //line of x
+    cout<<"  ";
+    for (int i = 0; i < 10; i++)
+    {
+        cout<<" "<<i;
+    }
+    cout<<endl;
 
+    //draws background array with already connected points
     for(int i=0;i<rows;i++)
     {
+        //line of y
         if (i<10)cout<<i<<"  ";
         else cout<<i<<" ";
 
         for(int x=0;x<cols;x++)
         {
-            cout<<ary[i][x]<<" ";
+            cout<<arr[i][x]<<" ";
         }
         cout<<""<<endl;
     }
 
     system("pause");
 
+    //cleans memory from dynamic elements
     for(int i=0; i<cols; i++)
     {
-        delete [] ary[i];
+        delete [] arr[i];
     }
 
-    delete [] ary;
+    delete [] points_arr;
+    delete [] points_arr[0];
+    delete [] points_arr[1];
+
+    delete [] arr;
     return 0;
 }
 
-void BresenhamLine(char **ary, const int x1, const int y1, const int x2, const int y2)
+//algorithm source https://pl.wikipedia.org/wiki/Algorytm_Bresenhama#Implementacja
+void BresenhamLine(char **arr, const int x1, const int y1, const int x2, const int y2)
 {
     // zmienne pomocnicze
     int d, dx, dy, ai, bi, xi, yi;
@@ -100,7 +140,7 @@ void BresenhamLine(char **ary, const int x1, const int y1, const int x2, const i
         dy = y1 - y2;
     }
     // pierwszy piksel
-    ary[x][y] = '+';
+    arr[x][y] = '+';
     // oś wiodąca OX
     if (dx > dy)
     {
@@ -122,7 +162,7 @@ void BresenhamLine(char **ary, const int x1, const int y1, const int x2, const i
                 d += bi;
                 x += xi;
             }
-            ary[x][y] = '+';
+            arr[x][y] = '+';
         }
     }
     // oś wiodąca OY
@@ -146,7 +186,7 @@ void BresenhamLine(char **ary, const int x1, const int y1, const int x2, const i
                 d += bi;
                 y += yi;
             }
-            ary[x][y] = '+';
+            arr[x][y] = '+';
         }
     }
 }
