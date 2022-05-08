@@ -114,10 +114,10 @@ int main()
 //algorithm source https://pl.wikipedia.org/wiki/Algorytm_Bresenhama#Implementacja
 void BresenhamLine(char **arr, const int x1, const int y1, const int x2, const int y2)
 {
-    // zmienne pomocnicze
+    // auxiliary variables
     int d, dx, dy, ai, bi, xi, yi;
     int x = x1, y = y1;
-    // ustalenie kierunku rysowania
+    // determining the direction of drawing
     if (x1 < x2)
     {
         xi = 1;
@@ -128,7 +128,7 @@ void BresenhamLine(char **arr, const int x1, const int y1, const int x2, const i
         xi = -1;
         dx = x1 - x2;
     }
-    // ustalenie kierunku rysowania
+    // determining the direction of drawing
     if (y1 < y2)
     {
         yi = 1;
@@ -139,18 +139,18 @@ void BresenhamLine(char **arr, const int x1, const int y1, const int x2, const i
         yi = -1;
         dy = y1 - y2;
     }
-    // pierwszy piksel
+    // first pixel
     arr[x][y] = '+';
-    // oś wiodąca OX
+    // leading axis OX
     if (dx > dy)
     {
         ai = (dy - dx) * 2;
         bi = dy * 2;
         d = bi - dx;
-        // pętla po kolejnych x
+        // loop after consecutive x
         while (x != x2)
         {
-            // test współczynnika
+            // ratio testtest współczynnika
             if (d >= 0)
             {
                 x += xi;
@@ -165,16 +165,16 @@ void BresenhamLine(char **arr, const int x1, const int y1, const int x2, const i
             arr[x][y] = '+';
         }
     }
-    // oś wiodąca OY
+    // leading axis OY
     else
     {
         ai = ( dx - dy ) * 2;
         bi = dx * 2;
         d = bi - dy;
-        // pętla po kolejnych y
+        // loop after consecutive y
         while (y != y2)
         {
-            // test współczynnika
+            // ratio test
             if (d >= 0)
             {
                 x += xi;
