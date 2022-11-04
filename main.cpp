@@ -7,10 +7,12 @@
  */
 
 #include <iostream>
+#include <string>
+#include <cmath>
 
 using namespace std;
 
-void BresenhamLine(char**,const int, const int, const int, const int);
+void BresenhamLine(char**, const int, const int, const int, const int);
 
 int main()
 {
@@ -19,6 +21,9 @@ int main()
     uint16_t B1=24,B2=29;
     char **arr;
     int **points_arr;
+
+    int colsDigitsNum;
+    int rowsDigitsNum;
 
     cout<<"How many points: ";
     cin>>points;
@@ -38,13 +43,14 @@ int main()
         cin>>points_arr[0][i];
 
         if(points_arr[0][i]>rows) rows = points_arr[0][i];
-        
-        //arr[points_arr[0][i]][points_arr[1][i]] =(char) 65+i;
     }
     cout<<endl;
 
     rows+=5;
     cols+=5;
+
+    colsDigitsNum = to_string(cols).length();
+    rowsDigitsNum = to_string(rows).length();
 
     arr = new char *[rows];
     for(int i=0; i<rows; i++)
@@ -61,7 +67,7 @@ int main()
         }
     }
 
-    //draws lines between points
+    //creates lines between points
     for(int i = 0; i < points; i++)
     {
         if(i+1>=points)
@@ -74,21 +80,39 @@ int main()
     }
 
     //line of x
-    cout<<"  ";
-    for (int i = 0; i < 10; i++)
+    for (int i = colsDigitsNum-1; i > 0; i--)
     {
-        cout<<" "<<i;
+        int decNum = 1;
+        int xBlankCount = (pow(10,i)*2)+(rowsDigitsNum+1);
+
+        //blank spaces
+        for (int x = 0; x < xBlankCount; x++) cout<<" ";
+
+        //numerals
+        for (int x = 0; x <= (cols*2-(xBlankCount-rowsDigitsNum))/2; x++)
+        {
+            if(x%(int)pow(10,i)==0 && x>0) decNum++;
+            if(decNum==10) decNum=0;
+            cout<<decNum<<" ";
+        }
+
+        cout<<endl;
     }
+
+    for (int i = 0; i < rowsDigitsNum+1; i++) cout<<" ";
+    for (int i = 0; i < cols; i++) cout<<i%10<<" "; //last line
+    
     cout<<endl;
 
-    //draws background array with already connected points
-    for(int i=0;i<rows;i++)
+    //draws y idx and background array with already connected points
+    for(int i=0; i<rows; i++)
     {
-        //line of y
-        if (i<10)cout<<i<<"  ";
-        else cout<<i<<" ";
+        //y indexes
+            for (int y = 0; y < abs((int)(to_string(i).length()-rowsDigitsNum)); y++) cout<<" ";
+            cout<<i<<" ";
 
-        for(int x=0;x<cols;x++)
+        //array
+        for(int x=0; x<cols; x++)
         {
             cout<<arr[i][x]<<" ";
         }
@@ -150,7 +174,7 @@ void BresenhamLine(char **arr, const int x1, const int y1, const int x2, const i
         // loop after consecutive x
         while (x != x2)
         {
-            // ratio testtest współczynnika
+            // ratio test
             if (d >= 0)
             {
                 x += xi;
