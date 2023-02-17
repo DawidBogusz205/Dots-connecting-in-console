@@ -12,6 +12,9 @@
 
 using namespace std;
 
+const uint8_t BG_CHAR = '-'; //
+const uint8_t LINE_CHAR = '#'; //
+
 void BresenhamLine(char**, const int, const int, const int, const int);
 
 int main()
@@ -58,12 +61,12 @@ int main()
         arr[i] = new char [cols];
     }
 
-    //fills background array with '-'
+    //fills background array with BG_CHAR
     for(int i=0; i<rows; i++)
     {
         for(int x=0; x<cols; x++)
         {
-            arr[i][x] ='-';
+            arr[i][x] = BG_CHAR;
         }
     }
 
@@ -164,7 +167,7 @@ void BresenhamLine(char **arr, const int x1, const int y1, const int x2, const i
         dy = y1 - y2;
     }
     // first pixel
-    arr[x][y] = '+';
+    arr[x][y] = LINE_CHAR;
     // leading axis OX
     if (dx > dy)
     {
@@ -186,7 +189,7 @@ void BresenhamLine(char **arr, const int x1, const int y1, const int x2, const i
                 d += bi;
                 x += xi;
             }
-            arr[x][y] = '+';
+            arr[x][y] = LINE_CHAR;
         }
     }
     // leading axis OY
@@ -210,7 +213,7 @@ void BresenhamLine(char **arr, const int x1, const int y1, const int x2, const i
                 d += bi;
                 y += yi;
             }
-            arr[x][y] = '+';
+            arr[x][y] = LINE_CHAR;
         }
     }
 }
